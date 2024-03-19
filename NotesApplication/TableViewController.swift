@@ -31,5 +31,13 @@ class TableViewController: UITableViewController {
       return cell
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let vc = DetailViewController()
+        vc.noteIdentifier = contents[indexPath.row]
+        print(vc.noteIdentifier)
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
 }
 
