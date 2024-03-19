@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B53947DB2BA9694C003CDF7A /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53947DA2BA9694C003CDF7A /* Note.swift */; };
 		B57B45FA2BA816AE006EBB96 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B45F92BA816AE006EBB96 /* AppDelegate.swift */; };
 		B57B45FC2BA816AE006EBB96 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B45FB2BA816AE006EBB96 /* SceneDelegate.swift */; };
 		B57B45FE2BA816AE006EBB96 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B45FD2BA816AE006EBB96 /* TableViewController.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B53947DA2BA9694C003CDF7A /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		B57B45F62BA816AE006EBB96 /* NotesApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NotesApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B57B45F92BA816AE006EBB96 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B57B45FB2BA816AE006EBB96 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 				B57B46042BA816B0006EBB96 /* LaunchScreen.storyboard */,
 				B57B46072BA816B0006EBB96 /* Info.plist */,
 				B57B46112BA8B30A006EBB96 /* DetailViewController.swift */,
+				B53947DA2BA9694C003CDF7A /* Note.swift */,
 			);
 			path = NotesApplication;
 			sourceTree = "<group>";
@@ -137,6 +140,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B53947DB2BA9694C003CDF7A /* Note.swift in Sources */,
 				B57B45FE2BA816AE006EBB96 /* TableViewController.swift in Sources */,
 				B57B45FA2BA816AE006EBB96 /* AppDelegate.swift in Sources */,
 				B57B45FC2BA816AE006EBB96 /* SceneDelegate.swift in Sources */,
