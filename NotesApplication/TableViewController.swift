@@ -10,13 +10,12 @@ import UIKit
 class TableViewController: UITableViewController {
     
     var contents = [Note]()
+    var tableList: [String] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         view.backgroundColor = .systemRed
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addNote))
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         
@@ -35,6 +34,7 @@ class TableViewController: UITableViewController {
             }
         }
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addNote))
     }
     
     
@@ -43,8 +43,9 @@ class TableViewController: UITableViewController {
         ac.addTextField()
         let submitAction = UIAlertAction(title: "New Note", style: .default) { [weak self, weak ac] _ in
             guard let item = ac?.textFields?[0].text else {return}
-            self?.submit(item)
-            
+            //self?.submit(item)
+            self?.tableList.append(item)
+            self?.tableView.reloadData()
         }
         
         ac.addAction(submitAction)
@@ -53,41 +54,37 @@ class TableViewController: UITableViewController {
     }
     
     func submit(_ item: String){
-        let note = Note(heading: item, noteContent: "")
+        // create an instance of Note with the heading
+        let note = Note(heading: item, noteContent: nil)
         contents.insert(note, at: 0)
         let indexPath = IndexPath(row: 0, section: 0)
         tableView.insertRows(at: [indexPath], with: .automatic)
-        save()
+        let jsonEncoder = JSONEncoder()
+        if let savedData = try? jsonEncoder.encode(contents) {
+            let defaults = UserDefaults.standard
+            defaults.set(savedData, forKey: item)
+        }
         return
     }
     
     
-    func save () {
-        let jsonEncoder = JSONEncoder()
-        if let savedData = try? jsonEncoder.encode(contents) {
-            let defaults = UserDefaults.standard
-            defaults.set(savedData, forKey: "notes")
-        }
-    }
-    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-      return contents.count
+      return tableList.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let note = contents[indexPath.item]
+        let note = tableList[indexPath.item]
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = note.heading
+        cell.textLabel?.text = note
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let note = contents[indexPath.item]
         let vc = DetailViewController()
-        vc.noteIdentifier = note.heading
+        vc.noteIdentifier = tableList[indexPath.row]
         print(vc.noteIdentifier)
         self.navigationController?.pushViewController(vc, animated: true)
     }
