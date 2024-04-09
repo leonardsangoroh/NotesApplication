@@ -9,6 +9,7 @@ import UIKit
 
 class DetailViewController: UIViewController {
     
+    var contents = [Note]()
     var noteIdentifier: String!
     let textView = UITextView()
 
@@ -30,46 +31,11 @@ class DetailViewController: UIViewController {
         ])
         
     }
-    
-    
-    func updateUserDefaults(){
-        // retrieve existing encoded data from UserDefaults
-        let defaults = UserDefaults.standard
-        // decode the data back to Notes
-        if let encodedData = defaults.data(forKey: noteIdentifier) {
-            print("decoded")
-            let decoder = JSONDecoder()
-            if let decodedNotes = try? decoder.decode(Note.self, from: encodedData) {
-                // modify the decoded Note instance with the noteContent
-                let updatedNote = Note(heading: decodedNotes.heading, noteContent: textView.text)
-                
-                // convert updated note instance to Data
-                let encoder = JSONEncoder()
-                if let updatedEncodedData = try? encoder.encode(updatedNote){
-                    // save updated encoded note to UserDefaults
-                    defaults.set(updatedEncodedData, forKey: noteIdentifier)
-                    print("done")
-                }
-            }
-        } else {
-            print("Not decoded")
-        }
-    }
-    
+
     
     override func viewDidDisappear(_ animated: Bool) {
         print("Gone")
-        updateUserDefaults()
     }
-    
-    
-//    func save () {
-//        let jsonEncoder = JSONEncoder()
-//        if let savedData = try? jsonEncoder.encode(contents) {
-//            let defaults = UserDefaults.standard
-//            defaults.set(savedData, forKey: "notes")
-//        }
-//    }
 
     /*
     // MARK: - Navigation
