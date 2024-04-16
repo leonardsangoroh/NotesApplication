@@ -9,6 +9,8 @@ import UIKit
 
 class DetailViewController: UIViewController {
     
+    let fileManager = FileManager.default
+    
     var contents = [Note]()
     var noteIdentifier: String!
     let textView = UITextView()

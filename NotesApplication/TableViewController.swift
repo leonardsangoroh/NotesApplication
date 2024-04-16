@@ -9,12 +9,21 @@ import UIKit
 
 class TableViewController: UITableViewController {
     
-    //var contents = [Note]()
+    let fileManager = FileManager.default
+    
+    var notes: [Note] = []
     var tableList: [String] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        createSaveDirectory()
+        setupTableView()
+        
+    }
+    
+    
+    func setupTableView() {
         view.backgroundColor = .systemRed
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
@@ -35,6 +44,52 @@ class TableViewController: UITableViewController {
         
         ac.addAction(submitAction)
         present(ac, animated: true)
+        
+    }
+    
+    
+    func createSaveDirectory() {
+        /*
+         when it comes to file management, each app has its own sandboxed file system
+         this means each app has its own area in the device's file system where it can save and manage files
+         other apps can't access this area, which helps keep the app's data secure
+         
+         one of the key parts of an app's sandboxed file system is the documents directory
+         this directory is where the app can save user-generated data that the app needs to function properly
+         the documents directory is automatically created by the system when the app is installed
+         
+         FileManager.default.urls(for: in:) returns an array of URLs for the specified directory in the specified domain
+         the .documentDirectory argument specifies the Documents directory
+         .userDomainMask argument specifies the current user's home directory
+         first! gets the first and usually the only URL in the array
+         */
+        
+        //get url for documents directory
+        let documentURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        //let documentURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        
+        // create directory where notes will be saved
+        // create userNotes URL
+        let userNotes = documentURL.appendingPathComponent("UserNotes")
+        
+        // create userNotes directory
+        do {
+            try FileManager.default.createDirectory(at: userNotes, withIntermediateDirectories: true, attributes: nil)
+        } catch {
+            // if userNotes already exists, do not create another
+            //print("Error creating directory: \(error)")
+            return
+        }
+        
+        // create notes JSON file url
+        let notesFileURL = userNotes.appendingPathComponent("notes.json")
+        
+        //check if file exists
+        if !FileManager.default.fileExists(atPath: notesFileURL.path) {
+            FileManager.default.createFile(atPath: notesFileURL.path, contents: nil, attributes: nil)
+        } else {
+            return
+        }
         
     }
     
