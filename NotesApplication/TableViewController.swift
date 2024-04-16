@@ -18,13 +18,15 @@ class TableViewController: UITableViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         createSaveDirectory()
+        notes = reloadNotes()
+        print(notes)
         setupTableView()
         
     }
     
     
     func setupTableView() {
-        view.backgroundColor = .systemRed
+        view.backgroundColor = .systemBackground
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         
@@ -37,8 +39,8 @@ class TableViewController: UITableViewController {
         ac.addTextField()
         let submitAction = UIAlertAction(title: "New Note", style: .default) { [weak self, weak ac] _ in
             guard let item = ac?.textFields?[0].text else {return}
-            //self?.submit(item)
-            self?.tableList.append(item)
+            
+            self?.writeToJSON(item: item)
             self?.tableView.reloadData()
         }
         
@@ -142,14 +144,32 @@ class TableViewController: UITableViewController {
     }
     
     
+    func reloadNotes() -> [Note] {
+        let fileURL = getFileURL()
+        var readingData: [Note] = []
+        
+        do {
+            let jsonNotes = try Data(contentsOf: fileURL)
+            
+            let jsonDecoder = JSONDecoder()
+            readingData = try jsonDecoder.decode([Note].self, from: jsonNotes)
+            
+        } catch {
+            print("Error decoding data: \(error)")
+        }
+        
+        return readingData
+    }
+    
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-      return tableList.count
+      return notes.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let noteHeading = tableList[indexPath.item]
+        let noteHeading = notes[indexPath.item].heading
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel?.text = noteHeading
@@ -159,7 +179,7 @@ class TableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = DetailViewController()
-        vc.noteIdentifier = tableList[indexPath.row]
+        vc.noteIdentifier = notes[indexPath.row].heading
         print(vc.noteIdentifier)
         self.navigationController?.pushViewController(vc, animated: true)
     }
