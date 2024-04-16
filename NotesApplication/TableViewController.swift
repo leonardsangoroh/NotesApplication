@@ -48,6 +48,53 @@ class TableViewController: UITableViewController {
     }
     
     
+    // write to json file
+    func writeToJSON(item heading: String) {
+        let note = Note(heading: heading, noteContent: nil)
+        notes.append(note)
+        save()
+        
+    }
+    
+    
+    func save () {
+        let fileURL = getFileURL()
+        let jsonEncoder = JSONEncoder()
+        if let savedData = try? jsonEncoder.encode(notes) {
+            do {
+                try savedData.write(to: fileURL)
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    
+    func getFileURL() -> URL{
+        //get url for documents directory
+        let documentURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        //let documentURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        
+        // create directory where notes will be saved
+        // create userNotes URL
+        let userNotes = documentURL.appendingPathComponent("UserNotes")
+        
+        //check if directory exists
+        // create userNotes directory
+        if !FileManager.default.fileExists(atPath: userNotes.path) {
+            print("Directory Created")
+            FileManager.default.createFile(atPath: userNotes.path, contents: nil, attributes: nil)
+        } else {
+            print("Directory already created")
+        }
+        
+        // create notes JSON file url
+        let notesFileURL = userNotes.appendingPathComponent("notes.json")
+        
+        return notesFileURL
+    }
+    
+    
     func createSaveDirectory() {
         /*
          when it comes to file management, each app has its own sandboxed file system
@@ -90,6 +137,7 @@ class TableViewController: UITableViewController {
         } else {
             print("File already created")
         }
+        
         
     }
     
