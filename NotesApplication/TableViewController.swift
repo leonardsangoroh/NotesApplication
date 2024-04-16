@@ -72,13 +72,13 @@ class TableViewController: UITableViewController {
         // create userNotes URL
         let userNotes = documentURL.appendingPathComponent("UserNotes")
         
+        //check if directory exists
         // create userNotes directory
-        do {
-            try FileManager.default.createDirectory(at: userNotes, withIntermediateDirectories: true, attributes: nil)
-        } catch {
-            // if userNotes already exists, do not create another
-            //print("Error creating directory: \(error)")
-            return
+        if !FileManager.default.fileExists(atPath: userNotes.path) {
+            print("Directory Created")
+            FileManager.default.createFile(atPath: userNotes.path, contents: nil, attributes: nil)
+        } else {
+            print("Directory already created")
         }
         
         // create notes JSON file url
@@ -88,7 +88,7 @@ class TableViewController: UITableViewController {
         if !FileManager.default.fileExists(atPath: notesFileURL.path) {
             FileManager.default.createFile(atPath: notesFileURL.path, contents: nil, attributes: nil)
         } else {
-            return
+            print("File already created")
         }
         
     }
