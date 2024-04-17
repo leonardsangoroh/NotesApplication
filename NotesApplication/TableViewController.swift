@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol NoteUpdateDelegate: AnyObject {
+    func didUpdateNoteContent(content: String, forNoteWithIdentifier identifier: String)
+}
+
 class TableViewController: UITableViewController {
     
     let fileManager = FileManager.default
@@ -52,7 +56,7 @@ class TableViewController: UITableViewController {
     
     // write to json file
     func writeToJSON(item heading: String) {
-        let note = Note(heading: heading, noteContent: nil)
+        let note = Note(heading: heading)
         notes.append(note)
         save()
         
@@ -180,9 +184,19 @@ class TableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = DetailViewController()
         vc.noteIdentifier = notes[indexPath.row].heading
-        print(vc.noteIdentifier)
+        vc.contents = notes[indexPath.row].noteContent
+        vc.delegate = self
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
 }
 
+
+extension TableViewController: NoteUpdateDelegate {
+    func didUpdateNoteContent(content: String, forNoteWithIdentifier identifier: String) {
+        if let index = notes.firstIndex(where: {$0.heading == identifier}) {
+            notes[index].noteContent = content
+            save()
+        }
+    }
+}

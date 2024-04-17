@@ -9,5 +9,5 @@ import Foundation
 
 struct Note: Codable {
     var heading: String
-    var noteContent: String?
+    var noteContent: String? = "Default Content"
 }
