@@ -189,6 +189,17 @@ class TableViewController: UITableViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let row = indexPath.row
+            notes.remove(at: row)
+            save()
+            tableView.reloadData()
+        }
+    }
+    
+    
 }
 
 
