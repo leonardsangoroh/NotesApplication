@@ -14,6 +14,8 @@ protocol NoteUpdateDelegate: AnyObject {
 class TableViewController: UITableViewController {
     
     let fileManager = FileManager.default
+    let backgroundImageName = "BackgroundImage.jpeg"
+    var backgroundImageView: UIImageView!
     
     var notes: [Note] = []
     var tableList: [String] = []
@@ -35,6 +37,13 @@ class TableViewController: UITableViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addNote))
+        
+        let backgroundImage = UIImage(named: backgroundImageName)
+        backgroundImageView = UIImageView(image: backgroundImage)
+        //backgroundImageView.contentMode = .scaleAspectFit
+        backgroundImageView.alpha = 0.2
+        
+        tableView.backgroundView = backgroundImageView
     }
     
     
