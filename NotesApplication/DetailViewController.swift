@@ -11,6 +11,7 @@ class DetailViewController: UIViewController {
     
     let fileManager = FileManager.default
     
+    var imageView = UIImageView()
     weak var delegate: NoteUpdateDelegate?
     var contents: String?
     var noteIdentifier: String!
@@ -21,11 +22,21 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        setupBackgroundImage()
         setupViewController()
         notes = reloadNotes()
         setupTextView()
         
     }
+    
+    
+    func setupBackgroundImage() {
+         imageView.frame = view.bounds // Adjust the frame as needed
+         imageView.image = UIImage(named: "PaperTexture.png") // Ensure the image is in your assets
+        //imageView.contentMode = .scaleAspectFit // Adjust the content mode as needed
+         view.addSubview(imageView)
+     }
+    
     
     func setupViewController() {
         title = noteIdentifier
@@ -35,13 +46,14 @@ class DetailViewController: UIViewController {
     func setupTextView() {
         textView.text = contents
         print(contents)
-        view.addSubview(textView)
+        textView.backgroundColor = .clear
         //textView.frame = CGRect(x: 20.0, y: 90.0, width: 250.0, height: 100.0)
+        view.addSubview(textView)
         
         textView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             textView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            textView.topAnchor.constraint(equalTo: view.topAnchor),
+            textView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
             textView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             textView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
