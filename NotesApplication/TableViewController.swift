@@ -26,8 +26,17 @@ class TableViewController: UITableViewController {
         createSaveDirectory()
         notes = reloadNotes()
         print(notes)
+        setupNavigation()
         setupTableView()
         
+    }
+    
+    
+    func setupNavigation() {
+        navigationController?.navigationBar.prefersLargeTitles = true
+        let rightBarButton = UIBarButtonItem(title: "Add Note", style: .plain, target: self, action: #selector(addNote))
+        rightBarButton.tintColor = .systemYellow
+        navigationItem.rightBarButtonItem = rightBarButton
     }
     
     
@@ -36,12 +45,10 @@ class TableViewController: UITableViewController {
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addNote))
-        
         let backgroundImage = UIImage(named: backgroundImageName)
         backgroundImageView = UIImageView(image: backgroundImage)
         //backgroundImageView.contentMode = .scaleAspectFit
-        backgroundImageView.alpha = 0.2
+        backgroundImageView.alpha = 0.06
         
         tableView.backgroundView = backgroundImageView
     }
@@ -186,6 +193,7 @@ class TableViewController: UITableViewController {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel?.text = noteHeading
+        cell.textLabel?.font = UIFont.systemFont(ofSize: 20)
         return cell
     }
     
