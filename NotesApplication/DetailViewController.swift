@@ -22,11 +22,20 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        setupNavigation()
         setupBackgroundImage()
         setupViewController()
         notes = reloadNotes()
         setupTextView()
         
+    }
+    
+    
+    func setupNavigation() {
+        navigationItem.largeTitleDisplayMode = .never
+        let backButton = UIBarButtonItem(title: "Notes", style: .done, target: nil, action: nil)
+        backButton.tintColor = .systemYellow
+        navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
     }
     
     
@@ -48,6 +57,7 @@ class DetailViewController: UIViewController {
         print(contents)
         textView.backgroundColor = .clear
         //textView.frame = CGRect(x: 20.0, y: 90.0, width: 250.0, height: 100.0)
+        textView.font = UIFont.systemFont(ofSize: 18)
         view.addSubview(textView)
         
         textView.translatesAutoresizingMaskIntoConstraints = false
